@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Identity Matrix Worksheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            background: white;
+            color: black;
+            line-height: 1.4;
+            padding: 40px;
+            max-width: 8.5in;
+            margin: 0 auto;
+        }
+        
+        /* Download PDF Button */
+        .download-pdf {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: black;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .download-pdf:hover {
+            background: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        @media print {
+            .download-pdf {
+                display: none !important;
+            }
+            
+            textarea::placeholder {
+                color: transparent;
+            }
+            
+            .writing-area,
+            .answer-area {
+                color: #000;
+                font-weight: normal;
+            }
+        }
+        
+        .worksheet {
+            border: 3px solid black;
+            padding: 30px;
+            background: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid black;
+            padding-bottom: 20px;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            font-style: italic;
+            margin-bottom: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .instructions {
+            font-size: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .matrix-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .page-two-content {
+            margin-top: 40px;
+        }
+        
+        .page-three-content {
+            margin-top: 40px;
+        }
+        
+        .matrix-section {
+            border: 2px solid black;
+            padding: 20px;
+            min-height: 300px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .section-subtitle {
+            font-size: 12px;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            border-bottom: 1px solid black;
+            padding-bottom: 10px;
+        }
+        
+        .writing-lines {
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 24px,
+                #ddd 24px,
+                #ddd 25px
+            );
+            height: 240px;
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        .writing-area {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            font-family: 'Times New Roman', serif;
+            font-size: 16px;
+            line-height: 24px;
+            padding: 0;
+            margin: 0;
+            resize: none;
+            outline: none;
+        }
+        
+        .reflection-questions {
+            margin-top: 40px;
+            border-top: 2px solid black;
+            padding-top: 20px;
+        }
+        
+        .reflection-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .questions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .question-block {
+            border: 1px solid black;
+            padding: 15px;
+        }
+        
+        .question {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .answer-space {
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 19px,
+                #ddd 19px,
+                #ddd 20px
+            );
+            height: 80px;
+            position: relative;
+        }
+        
+        .answer-area {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            line-height: 19px;
+            padding: 0;
+            margin: 0;
+            resize: none;
+            outline: none;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 10px;
+            font-style: italic;
+            border-top: 1px solid black;
+            padding-top: 15px;
+        }
+        
+        @media print {
+            body {
+                padding: 0.5in;
+                margin: 0;
+                max-width: 100%;
+            }
+            
+            .worksheet {
+                border: 2px solid black;
+                padding: 20px;
+                page-break-inside: avoid;
+            }
+            
+            .matrix-container {
+                page-break-inside: avoid;
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .matrix-section {
+                page-break-inside: avoid;
+                min-height: 300px;
+            }
+            
+            .page-two-content {
+                page-break-before: always;
+                margin-top: 0;
+                min-height: 10in;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .page-two-content .matrix-container {
+                flex: 1;
+            }
+            
+            .page-two-content .matrix-section {
+                min-height: 9in;
+                height: 100%;
+            }
+            
+            .page-two-content .writing-lines {
+                height: calc(100% - 80px);
+                min-height: 7.5in;
+            }
+            
+            .page-three-content {
+                page-break-before: always;
+                margin-top: 0;
+            }
+            
+            .reflection-questions {
+                page-break-inside: avoid;
+            }
+            
+            .question-block {
+                page-break-inside: avoid;
+            }
+            
+            .writing-lines,
+            .answer-space {
+                background: none;
+                border-bottom: 1px solid #ccc;
+                position: relative;
+            }
+            
+            .writing-lines::after,
+            .answer-space::after {
+                content: '';
+                position: absolute;
+                top: 25px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: repeating-linear-gradient(
+                    transparent,
+                    transparent 24px,
+                    #ccc 24px,
+                    #ccc 25px
+                );
+            }
+            
+            .answer-space::after {
+                background: repeating-linear-gradient(
+                    transparent,
+                    transparent 19px,
+                    #ccc 19px,
+                    #ccc 20px
+                );
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .matrix-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .page-two-content,
+            .page-three-content {
+                margin-top: 30px;
+            }
+            
+            .questions-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            body {
+                padding: 20px;
+            }
+        }
+    </style>
+    <script>
+        // Auto-save functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const textareas = document.querySelectorAll('textarea');
+            
+            // Load saved data
+            textareas.forEach((textarea, index) => {
+                const savedValue = localStorage.getItem(`worksheet-field-${index}`);
+                if (savedValue) {
+                    textarea.value = savedValue;
+                }
+            });
+            
+            // Save on input
+            textareas.forEach((textarea, index) => {
+                textarea.addEventListener('input', function() {
+                    localStorage.setItem(`worksheet-field-${index}`, this.value);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <button class="download-pdf" onclick="window.print()">Download PDF</button>
+    <div class="worksheet">
+        <div class="header">
+            <div class="title">Core Identity Matrix</div>
+            <div class="subtitle">
+                A 3-part Matrix (Core Truths, Emotional Signature, Future Vision) that makes your identity <em>tangible</em> and usable across your brand and choices.
+            </div>
+            <div class="instructions">
+                Take time to reflect deeply on each section. Write authentically and specifically.
+            </div>
+        </div>
+        
+        <div class="matrix-container">
+            <div class="matrix-section">
+                <div class="section-title">Core Truths</div>
+                <div class="section-subtitle">Who am I?</div>
+                <div class="writing-lines">
+                    <textarea class="writing-area" placeholder="Write your core truths here..."></textarea>
+                </div>
+            </div>
+            
+            <div class="matrix-section">
+                <div class="section-title">Emotional Signature</div>
+                <div class="section-subtitle">What signatures do I radiate?</div>
+                <div class="writing-lines">
+                    <textarea class="writing-area" placeholder="Describe your emotional signature..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-two-content">
+            <div class="matrix-container">
+                <div class="matrix-section" style="grid-column: span 2;">
+                    <div class="section-title">Future Vision</div>
+                    <div class="section-subtitle">Who am I becoming?</div>
+                    <div class="writing-lines">
+                        <textarea class="writing-area" placeholder="Envision your future self..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-three-content">
+            <div class="reflection-questions">
+            <div class="reflection-title">Reflection Questions</div>
+            <div class="questions-grid">
+                <div class="question-block">
+                    <div class="question">What values guide my decisions?</div>
+                    <div class="answer-space">
+                        <textarea class="answer-area" placeholder="Your answer..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-block">
+                    <div class="question">How do others describe my energy?</div>
+                    <div class="answer-space">
+                        <textarea class="answer-area" placeholder="Your answer..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-block">
+                    <div class="question">What patterns show up consistently in my life?</div>
+                    <div class="answer-space">
+                        <textarea class="answer-area" placeholder="Your answer..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-block">
+                    <div class="question">What legacy do I want to create?</div>
+                    <div class="answer-space">
+                        <textarea class="answer-area" placeholder="Your answer..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+            <div class="footer">
+                Complete this worksheet in a quiet space where you can think deeply. Your authentic responses will become the foundation for aligned choices and authentic self-expression.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
